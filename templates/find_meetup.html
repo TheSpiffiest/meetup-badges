@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup Badges</title>
+    {% if redirect2 > '' %}
+    <meta http-equiv="refresh" content="0;URL='{{ redirect2 }}'" />
+    {% endif %}
+  </head>
+  <body>
+    <h1>Meetup Badges</h1>
+    <div id="meetup_selector">
+      <form action="." method="get" name="lookup_meetup">
+        <label for="meetup_url">http://meetup.com/</label>
+        <input name="meetup_url" id="meetup_url" placeholder="meetup url here" value="{{ meetup_url }}" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <div id="result_json">
+        <script>
+        {{ result_json|tojson(indent=4) }}
+        </script>
+	{{ ryba }}
+    </div>
+  </body>
+</html>

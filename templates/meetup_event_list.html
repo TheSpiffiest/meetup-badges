@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup Badges</title>
+    {% if redirect2 > '' %}
+    <meta http-equiv="refresh" content="0;URL='{{ redirect2 }}'" />
+    {% endif %}
+  </head>
+  <body>
+    <h1>Meetup Badges</h1>
+    <div id="meetup_nav" style="background: red; color: white; font-weight: bold; padding: 0.25em 1em;" >
+        <span name="meetup_url">{{ meetup_url }}</span>
+        &gt;&gt;
+        <span name="nav_thing">Events</span>
+    </div>
+    <div id="event_list">
+        <h3>Events</h3>
+        <p>12 upcoming events</p>
+        <dl>
+            {% for event in event_list %}
+
+            <dt><a href="../event/{{ event['id'] }}">{{ event.name }} ( {{ event.local_date }} ) </a></dt>
+            <dd>
+                <div>
+                    {{ event.yes_rsvp_count }} of {{ event.rsvp_limit }} RSVP
+                </div>
+                <div>
+                    {{ event.description|safe }}
+                </div>
+            </dd>
+            {% else %}
+            <dt>No Events Detected</dt>
+            <dd>There don't appear to be any events scheduled for this meetup. </dd>
+            {% endfor %}
+        </dl>
+    </div>
+    <div id="result_json">
+        <script>
+        {{ result_json|tojson(indent=4) }}
+        </script>
+	{{ ryba }}
+    </div>
+  </body>
+</html>

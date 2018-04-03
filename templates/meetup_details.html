@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup Badges</title>
+    {% if redirect2 > '' %}
+    <meta http-equiv="refresh" content="0;URL='{{ redirect2 }}'" />
+    {% endif %}
+  </head>
+  <body>
+    <h1>Meetup Badges</h1>
+    <div id="meetup_nav" style="background: red; color: white; font-weight: bold; padding: 0.25em 1em;" >
+        <span name="meetup_url">{{ meetup_url }}</span>
+    </div>
+    <div id="meetup_details">
+        <ul>
+            <li><a href="./events">Events</a></li>
+            <li><a href="./members">Members</a></li>
+        </ul>
+    </div>
+    <div>
+        <img src="https://maps.googleapis.com/maps/api/staticmap?size=600x300&zoom=12&center=44.75,-85.60&key=AIzaSyBrW0gyU5sXFA3WmkX4e18RGOvPOLqqDf4" />        
+    </div>
+    <div id="result_json">
+        <script>
+        {{ result_json|tojson(indent=4) }}
+        </script>
+	{{ ryba }}
+    </div>
+  </body>
+</html>

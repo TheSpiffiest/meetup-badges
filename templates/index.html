@@ -2,13 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Meetup Badges</title>
+    <title>My Apps</title>
+    {% if redirect2 > '' %}
+    <meta http-equiv="refresh" content="0;URL='{{ redirect2 }}'" />
+    {% endif %}
   </head>
   <body>
-    <h1>Meetup Badges</h1>
-    <div id="meetup_selector">
-      <label for="meetup_url">http://meetup.com/</label>
-      <input name="meetup_url" id="meetup_url" placeholder="meetup url here" />
+    <h1>Simple Applications</h1>
+    <div id="applications">
+        <dl>
+            <dt><a href="/meetup/">Meetup</a></dt>
+            <dd>Print labels for meetup.com events</dd>
+            <dt><a href="/howmanypeopleinspace/">How Many People in Space</a></dt>
+            <dd>How many people are in space right now?</dd>
+        </dl>
     </div>
   </body>
 </html>
