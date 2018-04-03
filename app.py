@@ -55,6 +55,33 @@ def meetup_events_list(meetup_url):
     print('ok')
     return render_template('meetup_event_list.html', meetup_url=meetup_url, result_json=meetup_json, ryba="Nora", redirect2=redirect2, event_list=event_list)
 
+@app.route('/meetup/<meetup_url>/event/<event_id>')
+def meetup_event_rsvp_list(meetup_url, event_id):
+    rsvp_json = ''
+    if (meetup_url != '') and (event_id != ''):
+        rsvp_details = get_meetup_event_rsvp_list(meetup_url, event_id)
+        rsvp_json = rsvp_details
+        rsvp_obj = json.loads(rsvp_json)
+        rsvp_list = rsvp_obj['output']
+    else:
+        rsvp_list = []
+    return render_template('meetup_event_rsvp_list.html', meetup_url=meetup_url, event_id=event_id, rsvp_list=rsvp_list, result_json = rsvp_json)
+
+@app.route('/api/meetup/<meetup_url>/event/<event_id>')
+def get_meetup_event_rsvp_list(meetup_url, event_id):
+    the_url = 'https://api.meetup.com/{}/events/{}/rsvps?sign=true&key={}'.format(meetup_url, event_id, MEETUP_API_KEY)
+    url_exists = True
+    try:
+        rsvp_response = urllib.request.urlopen(the_url)
+        code = rsvp_response.getcode()
+        if (code == 200):
+            rsvp_string = rsvp_response.read().decode('utf-8')
+            rsvp_obj = json.loads(rsvp_string)
+    except urllib.error.HTTPError as e:
+        url_exists = False
+        rsvp_obj = {'result': 'Invalud meetup or event'}
+    return json.dumps( {'exists': url_exists, 'meetup_url': meetup_url, 'output': rsvp_obj })
+
 @app.route('/api/get_meetup_events/<meetup_url>')
 def get_meetup_events(meetup_url):
     the_url = 'https://api.meetup.com/{}/events?sign=true&key={}'.format(meetup_url, MEETUP_API_KEY)
@@ -93,6 +120,7 @@ def verify_meetup_url(meetup_url):
         url_exists = False
         meetup_obj = {'result': 'Invalid meetup url'}
     return json.dumps({'meetup_url': meetup_url, 'exists': url_exists, 'output': meetup_obj })
+
 
 
 def get_meetup_json(url, varlist):

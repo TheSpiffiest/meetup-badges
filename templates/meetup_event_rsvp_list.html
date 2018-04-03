@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Meetup Badges</title>
+    <style type="text/css">
+    @media print, screen {
+        h1,
+        #meetup_nav, 
+        #event_list h3,
+        #event_list > p,
+        #no_list {
+            display: none;
+        }
+        #yes_list {
+            list-style-type: none;
+        }
+        #yes_list li {
+            float: left;
+            display: inline-block;
+            margin-right: 0.5in;
+            margin-bottom: 0.20in;
+        }
+        body {
+            width: 8.5in;
+            margin: 0.375in 0.25in;
+            border: 1px solid blue;
+        }
+    }
+
+    </style>
+  </head>
+  <body>
+    <h1>Meetup Badges</h1>
+    <div id="meetup_nav" style="background: red; color: white; font-weight: bold; padding: 0.25em 1em;" >
+        <span name="meetup_url">{{ meetup_url }}</span>
+        &gt;&gt;
+        <span name="nav_thing">Events</span>
+    </div>
+    <div id="event_list">
+        <h3>Events</h3>
+        <p>{{ rsvp_list|length }} RSVP's Received...</p>
+        <ol id="yes_list" >
+            {% for rsvp in rsvp_list if rsvp.response == 'yes' %}
+            <li style="width: 3.375in; height: 2.333in; border: 3px solid black;">
+                <h4>{{ rsvp.member.name }}</h4>
+                <p>Response: {{ rsvp.response }}</p>
+                <p># {{ loop.index }}</p>
+            </li>
+            {% if loop.index % 8 == 0 %}
+            <div style="clear: left; display: block; page-break-after: always;" /></div>
+            {% endif %} 
+                
+            {% else %}
+            <p>No one has RSVP'd to attend your meetup yet</p>
+            {% endfor %}
+        </ol>
+        <ol id="no_list">
+            {% for rsvp in rsvp_list if rsvp.response == 'no' %}
+            <li>
+                <h4>{{ rsvp.member.name }}</h4>
+                <p>{{ rsvp.response }}</p>
+                <p>{{ loop.index }}</p>
+            </li>
+            {% else %}
+            <p>No body has said they can't make it</p>
+            {% endfor %}
+        </ol>
+    </div>
+    <div id="result_json">
+        <script>
+        {{ result_json|tojson(indent=4) }}
+        </script>
+	{{ ryba }}
+    </div>
+  </body>
+</html>
